@@ -1,7 +1,9 @@
-package mobilepad;
+package mobilepad.app;
 
 import javafx.stage.Stage;
-import mobilepad.exception.SingletonException;
+import mobilepad.app.control.ApplicationController;
+import mobilepad.app.exception.ApplicationInitializationException;
+import mobilepad.app.exception.SingletonException;
 
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -14,9 +16,9 @@ public abstract class Application extends javafx.application.Application
 	private static final Handler DEFAULT_LOGGING_HANDLER = new ConsoleHandler();
 	private static Application instance = null;
 	private Logger logger;
+	private ApplicationController controller;
 
-
-	static Application getInstance(){
+	public static Application getInstance(){
 		return instance;
 	}
 
@@ -27,10 +29,11 @@ public abstract class Application extends javafx.application.Application
 			throw new SingletonException(getClass());
 	}
 
-	public Application() {
+	public Application() throws ApplicationInitializationException {
 		this.logger = Logger.getLogger(MobilePadPC.class.getName());
 		this.logger.setLevel(DEFAULT_LOGGING_LEVEL);
 		this.logger.addHandler(DEFAULT_LOGGING_HANDLER);
+		this.controller = new ApplicationController();
 	}
 
 
@@ -40,7 +43,11 @@ public abstract class Application extends javafx.application.Application
 	}
 
 
-	final Logger getLogger() {
+	public final Logger getLogger() {
 		return logger;
+	}
+
+	public final ApplicationController getController(){
+		return controller;
 	}
 }

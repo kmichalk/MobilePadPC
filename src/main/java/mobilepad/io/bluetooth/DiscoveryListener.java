@@ -1,4 +1,4 @@
-package mobilepad.bluetooth;
+package mobilepad.io.bluetooth;
 
 import javax.bluetooth.DeviceClass;
 import javax.bluetooth.RemoteDevice;

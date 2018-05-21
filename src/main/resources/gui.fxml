@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<Pane minHeight="392.0" minWidth="600.0" prefHeight="392.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mobilepad.Controller">
+<Pane minHeight="392.0" minWidth="600.0" prefHeight="392.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mobilepad.app.ui.Controller">
    <children>
       <GridPane prefHeight="392.0" prefWidth="600.0">
         <columnConstraints>
@@ -40,13 +40,13 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Save" />
-                        <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Settings" GridPane.columnIndex="2" />
-                        <Button fx:id="applyButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Apply" GridPane.columnIndex="3" />
-                        <Button fx:id="loadButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" text="Load" GridPane.columnIndex="1" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonPressed" prefHeight="25.0" prefWidth="102.0" text="Save" />
+                        <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#settingsButtonPressed" prefHeight="25.0" prefWidth="109.0" text="Settings" GridPane.columnIndex="2" />
+                        <Button fx:id="applyButton" mnemonicParsing="false" onAction="#applyButtonPressed" prefHeight="25.0" prefWidth="104.0" text="Apply" GridPane.columnIndex="3" />
+                        <Button fx:id="loadButton" mnemonicParsing="false" onAction="#loadButtonPressed" prefHeight="25.0" prefWidth="132.0" text="Load" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
-                  <ListView prefHeight="600.0" prefWidth="400.0" />
+                  <ListView fx:id="availableControlEventsListView" prefHeight="600.0" prefWidth="400.0" />
                </children>
             </GridPane>
             <GridPane prefHeight="400.0" prefWidth="245.0">

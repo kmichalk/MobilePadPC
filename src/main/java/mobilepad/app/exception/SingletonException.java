@@ -1,4 +1,4 @@
-package mobilepad.exception;
+package mobilepad.app.exception;
 
 public class SingletonException extends Exception
 {

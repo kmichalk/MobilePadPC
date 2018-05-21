@@ -1,4 +1,4 @@
-package mobilepad;
+package mobilepad.app.ui;
 
 import com.intel.bluetooth.DebugLog;
 import javafx.collections.FXCollections;
@@ -6,8 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import mobilepad.bluetooth.ConnectionHandler;
+import mobilepad.app.ApplicationComponent;
+import mobilepad.io.bluetooth.ConnectionHandler;
+import mobilepad.io.bluetooth.message.control.KeyEvent;
 
 import javax.bluetooth.BluetoothStateException;
 import java.util.List;
@@ -32,6 +35,9 @@ public class Controller extends ApplicationComponent
 	public Button applyButton;
 	@FXML
 	public ComboBox<ConnectionHandler.RemoteDeviceData> mobileDevicesDropBox;
+	@FXML
+	public ListView<ControlEventItem> availableControlEventsListView;
+
 	private ConnectionHandler connectionHandler;
 
 
@@ -48,7 +54,7 @@ public class Controller extends ApplicationComponent
 
 	public void refreshButtonPressed(ActionEvent e) {
 		try {
-			connectionHandler.setUpLocalDevice();
+			//connectionHandler.setUpLocalDevice();
 			List<ConnectionHandler.RemoteDeviceData> remoteDevices = connectionHandler.refresh();
 			mobileDevicesDropBox.setItems(FXCollections.observableList(remoteDevices));
 		}
@@ -59,8 +65,13 @@ public class Controller extends ApplicationComponent
 
 
 	public void loadButtonPressed(ActionEvent e) {
+		availableControlEventsListView
+				.getItems()
+				.add(new ControlEventItem(
+						new KeyEvent(java.awt.event.KeyEvent.VK_A),
+						"Event",
+						"..."));
 	}
-
 
 	public void saveButtonPressed(ActionEvent e) {
 	}
