@@ -1,4 +1,4 @@
-package mobilepad.io.bluetooth.message;
+package mobilepad.io.message;
 
 public class InfoMessage extends Message
 {
@@ -6,13 +6,13 @@ public class InfoMessage extends Message
 
 
 	public InfoMessage(String text) {
-		super(MessageType.INFO);
+		super(Type.INFO);
 		this.text = text;
 	}
 
 
 	public InfoMessage() {
-		super(MessageType.INFO);
+		super(Type.INFO);
 		this.text = "";
 	}
 }

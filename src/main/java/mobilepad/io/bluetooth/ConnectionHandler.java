@@ -69,13 +69,14 @@ public class ConnectionHandler
 
 		try {
 			localDevice = LocalDevice.getLocalDevice();
-			localDevice.setDiscoverable(DiscoveryAgent.GIAC);
+			//localDevice.setDiscoverable(DiscoveryAgent.GIAC);
 
-			UUID uuid = new UUID("d0c722b07e1511e1b0c40800200c9a66", false);
+			UUID uuid = new UUID("1101", true);
 			System.out.println(uuid.toString());
 
-			String url = "btspp://localhost:" + uuid.toString() + ";name=RemoteBluetooth";
+			String url = "btspp://localhost:" + uuid.toString() + ";name=PCBluetoothServer";
 			notifier = (StreamConnectionNotifier) Connector.open(url);
+			connection = notifier.acceptAndOpen();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -14,7 +14,7 @@ public class ProtocolDecodeException extends IOException
 
 
 	public ProtocolDecodeException(String message, Throwable cause) {
-		super(message, cause);
+		super(message + "; " + cause.getMessage(), cause);
 	}
 
 

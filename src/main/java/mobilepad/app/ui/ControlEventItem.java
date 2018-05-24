@@ -1,12 +1,12 @@
 package mobilepad.app.ui;
 
-import mobilepad.io.bluetooth.message.control.ControlEvent;
+import mobilepad.io.message.control.ControlEvent;
 
 public class ControlEventItem
 {
-	public ControlEvent event;
-	public String name;
-	public String description;
+	private ControlEvent event;
+	private String name;
+	private String description;
 
 
 	public ControlEventItem(){
@@ -31,5 +31,20 @@ public class ControlEventItem
 	@Override
 	public String toString(){
 		return name;
+	}
+
+
+	public final ControlEvent getEvent() {
+		return event;
+	}
+
+
+	public final String getName() {
+		return name;
+	}
+
+
+	public final String getDescription() {
+		return description;
 	}
 }

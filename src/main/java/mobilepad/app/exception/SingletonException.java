@@ -1,6 +1,6 @@
 package mobilepad.app.exception;
 
-public class SingletonException extends Exception
+public class SingletonException extends ApplicationInitializationException
 {
 	public SingletonException() {
 		super("Singleton object already initialized.");

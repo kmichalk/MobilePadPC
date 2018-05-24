@@ -1,12 +1,11 @@
 package mobilepad.io.bluetooth;
 
+import mobilepad.app.Application;
 import mobilepad.app.ApplicationComponent;
-import mobilepad.io.bluetooth.message.Message;
-import mobilepad.io.bluetooth.message.MessageHandler;
+import mobilepad.app.exception.UnexpectedException;
+import mobilepad.io.message.Message;
 import mobilepad.io.protocol.Protocol;
-import mobilepad.io.protocol.XMLProtocol;
 import mobilepad.io.protocol.exception.ProtocolDecodeException;
-import mobilepad.io.util.ByteArrayInputStreamReader;
 
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
@@ -23,8 +22,6 @@ import java.util.logging.Level;
 
 public class PCBluetoothServer extends ApplicationComponent implements Runnable
 {
-	private static final Protocol DEFAULT_PROTOCOL = new XMLProtocol();
-
 	private String UUID;
 	private int discoveryMode;
 	private int token;
@@ -32,8 +29,9 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 	private int processPeriod;
 	private InputStream inputStream;
 	private OutputStream outputStream;
+	private StreamConnectionNotifier notifier;
 	private Protocol protocol;
-	private MessageHandler messageHandler;
+	private Thread readerThread;
 
 
 	public PCBluetoothServer(){
@@ -44,27 +42,23 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 		this.processPeriod = 200;
 		this.inputStream = null;
 		this.outputStream = null;
-		this.protocol = DEFAULT_PROTOCOL;
-		this.messageHandler = new MessageHandler();
+		this.notifier = null;
+		this.protocol = Application.DEFAULT_SERIALIZATION_PROTOCOL;
+		this.readerThread = null;
 	}
 
 	private void serverLoop(final StreamConnectionNotifier notifier) {
+		this.notifier = notifier;
 		try {
 			while (running) {
 				log("Waiting for connection...");
 				handleConnection(notifier.acceptAndOpen());
 			}
+			Thread.sleep(processPeriod);
 		}
 		catch (Exception e) {
 			log(e);
 		}
-		try {
-			Thread.sleep(processPeriod);
-		}
-		catch (InterruptedException ex) {
-			log(ex);
-		}
-
 	}
 
 
@@ -77,18 +71,30 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 
 
 
+
 	private void startReadThread(final InputStream in) {
-		Thread reader = new Thread(() -> {
+		readerThread = new Thread(() -> {
+			Message message;
 			try {
-				byte[] received = new ByteArrayInputStreamReader(in).readAll();
-				Message message = protocol.decode(received);
-				messageHandler.handle(message);
+				message = protocol.decode(in);
+				try{
+					if (message != null)
+						parentApplication.getController().handleMessage(message);
+					else
+						log(Level.WARNING, "Received invalid data. Message was null.");
+				}
+				catch (Throwable t){
+					log(new UnexpectedException("Failed to execute received message", t));
+				}
 			}
 			catch (ProtocolDecodeException e) {
 				log(e);
 			}
+			catch (Throwable t){
+				log(new UnexpectedException("Failed to decode received data", t));
+			}
 		});
-		reader.start();
+		readerThread.start();
 	}
 
 
@@ -98,14 +104,28 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 		try {
 			LocalDevice device = LocalDevice.getLocalDevice();
 			device.setDiscoverable(DiscoveryAgent.GIAC);
-			String url = "btspp://localhost:" + UUID + ";name=mobilepad.io.bluetooth.PCBluetoothServer";
-			log(Level.INFO, "Create server by uri: " + url);
+			String url = "btspp://localhost:" + UUID + ";name=PCBluetoothServer";
+			log(Level.INFO, "Created server by uri: " + url);
 			StreamConnectionNotifier notifier = (StreamConnectionNotifier) Connector.open(url);
 			serverLoop(notifier);
 		}
 		catch (Throwable t) {
-			log(t);
+			log(new UnexpectedException(t));
 		}
+	}
+
+
+	public void stop(){
+		running = false;
+		abortCurrentConnection();
+	}
+
+
+	public void abortCurrentConnection(){
+		try {
+			notifier.close();
+		}
+		catch (IOException ignored) { }
 	}
 
 

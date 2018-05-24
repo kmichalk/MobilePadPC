@@ -1,6 +1,10 @@
-package mobilepad.io.bluetooth.message.control.mapper;
+package mobilepad.io.message.control.mapping;
 
-import mobilepad.io.bluetooth.message.control.ControlEvent;
+import mobilepad.app.conf.ConfigurationItem;
+import mobilepad.io.message.control.ControlEvent;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ArrayControlEventMapper implements ControlEventMapper
 {
@@ -23,6 +27,12 @@ public class ArrayControlEventMapper implements ControlEventMapper
 
 
 	@Override
+	public boolean map(Mapping mapping) {
+		return map(mapping.event, mapping.id, true);
+	}
+
+
+	@Override
 	public boolean map(ControlEvent event, int id, boolean override) {
 		if (id < data.length && (override || data[id] == null)) {
 			data[id] = event;
@@ -39,5 +49,14 @@ public class ArrayControlEventMapper implements ControlEventMapper
 			return data[id];
 		else
 			return null;
+	}
+
+	@Override
+	public Collection<ConfigurationItem> getConfiguration() {
+		ArrayList<ConfigurationItem> mappings = new ArrayList<>(data.length);
+		for (int i=0;i<data.length;++i)
+			if (data[i] != null)
+				mappings.add(new Mapping(i, data[i]));
+		return mappings;
 	}
 }

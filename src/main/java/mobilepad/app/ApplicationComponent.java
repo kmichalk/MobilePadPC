@@ -24,19 +24,19 @@ public class ApplicationComponent
 	}
 
 
-	protected final void log(Level level, String message){
+	public final void log(Level level, String message){
 		parentApplication.getLogger().log(level, message);
 	}
 
-	protected final void log(String message){
+	public final void log(String message){
 		parentApplication.getLogger().log(stringLoggingLevel, message);
 	}
 
-	protected final void log(Throwable t){
-		parentApplication.getLogger().log(exceptionLoggingLevel, t.getStackTrace().toString());
+	public final void log(Throwable t){
+		parentApplication.getLogger().log(exceptionLoggingLevel, t.getMessage());
 	}
 
-	protected final void log(Level level, Throwable e){
+	public final void log(Level level, Throwable e){
 		parentApplication.getLogger().log(level, e.getMessage());
 	}
 }
