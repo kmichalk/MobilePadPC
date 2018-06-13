@@ -12,8 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class XMLConfigurationFileHandler extends ApplicationComponent implements ConfigurationFileHandler
+/**
+ * The configuration file handler implemented in default way
+ */
+public class DefaultConfigurationFileHandler extends ApplicationComponent implements ConfigurationFileHandler
 {
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void saveConfiguration(File file, Protocol protocol, Collection<ConfigurationItem> items)
 			throws IOException {
@@ -22,7 +28,9 @@ public class XMLConfigurationFileHandler extends ApplicationComponent implements
 			protocol.encode(i, out);
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Collection<ConfigurationItem> loadConfiguration(File file, Protocol protocol)
 			throws IOException {

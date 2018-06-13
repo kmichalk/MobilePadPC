@@ -7,22 +7,38 @@ import javax.microedition.io.StreamConnectionNotifier;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class handling listing and connecting bluetooth devices
+ */
 public class ConnectionHandler
 {
+	/**
+	 * Data class with remote device parameters
+	 */
 	public static class RemoteDeviceData
 	{
+		/**
+		 * the remote device
+		 */
 		public RemoteDevice device;
+		/**
+		 * The class of the device
+		 */
 		public DeviceClass deviceClass;
 
 
+		/**
+		 * Constructor
+		 * @param device the device
+		 * @param deviceClass the class of device
+		 */
 		public RemoteDeviceData(RemoteDevice device, DeviceClass deviceClass) {
 			this.device = device;
 			this.deviceClass = deviceClass;
 		}
 	}
 
-	List<RemoteDeviceData> remoteDevices;
+	private List<RemoteDeviceData> remoteDevices;
 	private LocalDevice localDevice;
 	private DiscoveryAgent discoveryAgent;
 	Object lock;
@@ -33,6 +49,9 @@ public class ConnectionHandler
 	}
 
 
+	/**
+	 * Default constructor
+	 */
 	public ConnectionHandler() {
 		this.localDevice = null;
 		this.discoveryAgent = null;
@@ -41,12 +60,21 @@ public class ConnectionHandler
 	}
 
 
+	/**
+	 * Initializes the connector state by setting local device
+	 * @throws BluetoothStateException
+	 */
 	public void setUpLocalDevice() throws BluetoothStateException {
 		this.localDevice = LocalDevice.getLocalDevice();
 		this.discoveryAgent = localDevice.getDiscoveryAgent();
 	}
 
 
+	/**
+	 * Refreshes the list of available devices
+	 * @return list of available devices
+	 * @throws BluetoothStateException if a connection error occurred with bluetooth
+	 */
 	public List<RemoteDeviceData> refresh() throws BluetoothStateException {
 		waitForConnection();
 //		DiscoveryListener listener = new DiscoveryListener(this);

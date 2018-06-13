@@ -49,6 +49,7 @@ public class UIController extends ApplicationComponent
 
 	public UIController() {
 		this.connectionHandler = new ConnectionHandler();
+		this.eventConnector = new EventConnector();
 		DebugLog.setDebugEnabled(true);
 	}
 

@@ -12,6 +12,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The base class for application containing basic utilities. It assures that there is only one instance of this class.
+ */
 public abstract class Application extends javafx.application.Application
 {
 	private static final Level DEFAULT_LOGGING_LEVEL = Level.INFO;
@@ -23,7 +26,7 @@ public abstract class Application extends javafx.application.Application
 	private ApplicationController controller;
 
 
-	protected static void setInstance(Application instance) throws SingletonException {
+	private static void setInstance(Application instance) throws SingletonException {
 		if (Application.instance == null)
 			Application.instance = instance;
 		else
@@ -31,35 +34,62 @@ public abstract class Application extends javafx.application.Application
 	}
 
 
+	/**
+	 * Gets the instance of singeton application
+	 * @return the instance
+	 */
 	public static Application getInstance(){
 		return instance;
 	}
 
+
+	/**
+	 * Default constructor
+	 * @throws ApplicationInitializationException when there was a problem with initialization of the application ie. the application was already initialized
+	 */
 	protected Application() throws ApplicationInitializationException {
 		setInstance(this);
 		this.primaryStage = null;
 		this.controller = new ApplicationController();
 		this.logger = Logger.getLogger(instance.getClass().getName());
 		this.logger.setLevel(DEFAULT_LOGGING_LEVEL);
-		this.logger.addHandler(DEFAULT_LOGGING_HANDLER);
+		//this.logger.addHandler(DEFAULT_LOGGING_HANDLER);
 	}
 
 
+	/**
+	 * Overridden method run when the application starts
+	 * @param primaryStage the stage on which the application GUI runs
+	 * @throws Exception
+	 */
 	@Override
 	public synchronized void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 	}
 
 
+	/**
+	 * Gets the associated stage
+	 * @return the associated stage
+	 */
 	public final Stage getPrimaryStage() {
 		return primaryStage;
 	}
 
 
+	/**
+	 * Gets the main application logger for usage in application component classes
+	 * @return the logger
+	 */
 	public final Logger getLogger() {
 		return logger;
 	}
 
+
+	/**
+	 * Gets access to the application controller
+	 * @return the controller
+	 */
 	public final ApplicationController getController(){
 		return controller;
 	}

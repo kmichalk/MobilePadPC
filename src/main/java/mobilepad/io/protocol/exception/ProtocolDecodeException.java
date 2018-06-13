@@ -2,6 +2,9 @@ package mobilepad.io.protocol.exception;
 
 import java.io.IOException;
 
+/**
+ * Exception thrown when current protocol could not decode received information
+ */
 public class ProtocolDecodeException extends IOException
 {
 	public ProtocolDecodeException() {

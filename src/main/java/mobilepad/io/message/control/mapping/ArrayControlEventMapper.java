@@ -6,6 +6,9 @@ import mobilepad.io.message.control.ControlEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ *
+ */
 public class ArrayControlEventMapper implements ControlEventMapper
 {
 	private static final int MAX_EVENTS = 64;

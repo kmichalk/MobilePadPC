@@ -4,8 +4,14 @@ import mobilepad.io.protocol.exception.ProtocolDecodeException;
 
 import java.io.*;
 
+/**
+ * Serialization protocol using the default built-in java object streams as serialization method
+ */
 public class DefaultBinarySerializationProtocol implements Protocol
 {
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public <T> T decode(InputStream in) throws IOException {
 		try {
@@ -19,7 +25,9 @@ public class DefaultBinarySerializationProtocol implements Protocol
 		}
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public <T> void encode(T o, OutputStream out) throws IOException {
 		new ObjectOutputStream(out).writeObject(o);

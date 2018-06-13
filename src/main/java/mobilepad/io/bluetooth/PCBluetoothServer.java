@@ -19,7 +19,6 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 
 
-
 public class PCBluetoothServer extends ApplicationComponent implements Runnable
 {
 	private String UUID;
@@ -31,6 +30,7 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 	private OutputStream outputStream;
 	private StreamConnectionNotifier notifier;
 	private Protocol protocol;
+	private volatile boolean reading;
 	private Thread readerThread;
 
 
@@ -44,6 +44,7 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 		this.outputStream = null;
 		this.notifier = null;
 		this.protocol = Application.DEFAULT_SERIALIZATION_PROTOCOL;
+		this.reading = false;
 		this.readerThread = null;
 	}
 
@@ -75,23 +76,31 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 	private void startReadThread(final InputStream in) {
 		readerThread = new Thread(() -> {
 			Message message;
-			try {
-				message = protocol.decode(in);
-				try{
-					if (message != null)
-						parentApplication.getController().handleMessage(message);
-					else
-						log(Level.WARNING, "Received invalid data. Message was null.");
+			reading = true;
+			while (reading){
+				try {
+					message = protocol.decode(in);
+					try{
+						if (message != null)
+							parentApplication.getController().handleMessage(message);
+						//else
+							//log(Level.WARNING, "Received invalid data. Message was null.");
+					}
+					catch (Throwable t){
+						//log(new UnexpectedException("Failed to execute received message", t));
+					}
+				}
+				catch (ProtocolDecodeException e) {
+					//log(e);
+				}
+				catch (IOException e){
+					//log(e);
+					reading = false;
+					break;
 				}
 				catch (Throwable t){
-					log(new UnexpectedException("Failed to execute received message", t));
+					//log(new UnexpectedException("Failed to decode received data", t));
 				}
-			}
-			catch (ProtocolDecodeException e) {
-				log(e);
-			}
-			catch (Throwable t){
-				log(new UnexpectedException("Failed to decode received data", t));
 			}
 		});
 		readerThread.start();
@@ -116,6 +125,7 @@ public class PCBluetoothServer extends ApplicationComponent implements Runnable
 
 
 	public void stop(){
+		reading = false;
 		running = false;
 		abortCurrentConnection();
 	}

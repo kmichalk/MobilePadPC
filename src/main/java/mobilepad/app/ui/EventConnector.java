@@ -4,6 +4,9 @@ import com.sun.istack.internal.NotNull;
 import mobilepad.app.ApplicationComponent;
 import mobilepad.io.message.control.ControlEvent;
 
+/**
+ * Class for handling connecting custom events with the actions to be performed in system
+ */
 class EventConnector extends ApplicationComponent
 {
 	private InputEventElem lastSelectedInputEventElem = null;

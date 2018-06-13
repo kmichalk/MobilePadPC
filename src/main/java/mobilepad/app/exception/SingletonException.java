@@ -1,5 +1,8 @@
 package mobilepad.app.exception;
 
+/**
+ * An exception thrown when the singleton class was already initialized
+ */
 public class SingletonException extends ApplicationInitializationException
 {
 	public SingletonException() {

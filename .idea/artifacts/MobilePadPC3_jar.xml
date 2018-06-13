@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MobilePadPC3:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MobilePadPC3_jar</output-path>
+    <root id="archive" name="MobilePadPC3.jar">
+      <element id="module-output" name="MobilePadPC3" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/bluecove-2.1.1-63.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

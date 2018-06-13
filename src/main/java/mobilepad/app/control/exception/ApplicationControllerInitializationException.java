@@ -2,6 +2,9 @@ package mobilepad.app.control.exception;
 
 import mobilepad.app.exception.ApplicationInitializationException;
 
+/**
+ * Exception thrown when there is a problem with ApllicationController initialization.
+ */
 public class ApplicationControllerInitializationException extends ApplicationInitializationException
 {
 	public ApplicationControllerInitializationException() {

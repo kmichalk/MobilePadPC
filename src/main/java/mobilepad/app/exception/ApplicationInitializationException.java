@@ -1,5 +1,8 @@
 package mobilepad.app.exception;
 
+/**
+ * An exception thrown when the aplication could not start
+ */
 public class ApplicationInitializationException extends Exception
 {
 	public ApplicationInitializationException() {

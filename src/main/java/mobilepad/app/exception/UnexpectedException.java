@@ -2,6 +2,9 @@ package mobilepad.app.exception;
 
 import mobilepad.io.util.StringConcat;
 
+/**
+ * An exception rethrown in any situation when an unexpected exception was caught
+ */
 public class UnexpectedException extends Exception
 {
 	public UnexpectedException(String message, Throwable cause) {
